@@ -3,6 +3,5 @@ node_modules/
 terraform.tfstate*
 terraform.tfvars
 config.json
-master-key.txt
 cert.pem
-notes.txt
+*.txt

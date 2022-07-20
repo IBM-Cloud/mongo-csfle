@@ -50,15 +50,23 @@ async function main() {
     .collection(VAULT_COLL)
     .findOne({ keyAltNames: { $in: [KEY_ALT_NAME] } })
 
+  let keyId=""
   if (dataKey === null) {
     dataKey = await encryption.createDataKey("local", {
       keyAltNames: [KEY_ALT_NAME]
     })
+    keyId = dataKey.toString("base64")
+
+  } else {
+    // datakey already exists..just take its id
+    keyId = dataKey["_id"].toString("base64")
   }
-
-  console.log("Base64 data key. Copy and paste this into clients.js\t", dataKey)
-
+  console.log("dataKey created! Writing it to a file..")
   client.close()
+  fs.writeFileSync("keyid.txt",keyId)
+
+
+
 }
 
 main().catch(console.dir)
