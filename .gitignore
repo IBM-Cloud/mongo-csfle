@@ -4,4 +4,8 @@ terraform.tfstate*
 terraform.tfvars
 config.json
 cert.pem
-*.txt
+master-key.txt
+keyid.txt
+notes.txt
+mongocryptd.pid
+template.json
