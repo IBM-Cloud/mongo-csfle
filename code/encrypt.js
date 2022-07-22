@@ -1,5 +1,6 @@
 const EC= require("./mongoencryptedclient")
 const fs = require("fs")
+const constants = require("./constants.js")
 
 const getRecords = function() {
   //read in the text file with all the records (which are strings), split by newline and then turn each line into a json object
@@ -15,8 +16,8 @@ const main = async function () {
 
   const ec = await EC()
 
-  const database = ec.db("medicalRecords");
-  const collection = database.collection("patients")
+  const database = ec.db(constants.RECORDS_DB);
+  const collection = database.collection(constants.RECORDS_COLL)
 
  //create an index
  try {

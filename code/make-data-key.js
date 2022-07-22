@@ -1,9 +1,7 @@
 // make-data-key.js
 const mongoclient = require ('./mongoclient')
 const fs = require("fs")
-const VAULT_DB = "encryption"
-const VAULT_COLL = "__keyVault"
-const KEY_ALT_NAME = "demo-data-key"
+const constants = require("./constants.js")
 const { ClientEncryption } = require("mongodb-client-encryption")
 
 
@@ -16,7 +14,7 @@ async function main() {
   //console.log(localMasterKey.length)
  
   const encryption = new ClientEncryption(client, {
-    keyVaultNamespace: `${VAULT_DB}.${VAULT_COLL}`,
+    keyVaultNamespace: `${constants.VAULT_DB}.${constants.VAULT_COLL}`,
     kmsProviders:  {
       local: {
         key: localMasterKey
@@ -27,8 +25,8 @@ async function main() {
   //ensure unique index on Key vault
   try {
     await client
-      .db(VAULT_DB)
-      .collection(VAULT_COLL)
+      .db(constants.VAULT_DB)
+      .collection(constants.VAULT_COLL)
       .createIndex("keyAltNames", {
         unique: true,
         partialFilterExpression: {
@@ -46,14 +44,14 @@ async function main() {
 
   // create a data key
   let dataKey = await client
-    .db(VAULT_DB)
-    .collection(VAULT_COLL)
-    .findOne({ keyAltNames: { $in: [KEY_ALT_NAME] } })
+    .db(constants.VAULT_DB)
+    .collection(constants.VAULT_COLL)
+    .findOne({ keyAltNames: { $in: [constants.KEY_ALT_NAME] } })
 
   let keyId=""
   if (dataKey === null) {
     dataKey = await encryption.createDataKey("local", {
-      keyAltNames: [KEY_ALT_NAME]
+      keyAltNames: [constants.KEY_ALT_NAME]
     })
     keyId = dataKey.toString("base64")
 
