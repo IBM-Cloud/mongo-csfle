@@ -1,5 +1,5 @@
 const mongodb = require("mongodb")
-const {Binary} = mongodb
+const { Binary } = mongodb
 
 
 module.exports = function (dataKey = null) {

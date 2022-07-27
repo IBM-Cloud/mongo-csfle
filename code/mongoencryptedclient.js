@@ -30,18 +30,18 @@ module.exports = async function () {
     useUnifiedTopology: true,
     monitorCommands: true,
     autoEncryption: {
-       // The key vault collection contains the data key that the client uses to encrypt and decrypt fields.
-       keyVaultNamespace: `${constants.VAULT_DB}.${constants.VAULT_COLL}`,
-       // The client expects a key management system to store and provide the application's master encryption key.
-       // For now, we will use a local master key, so they use the local KMS provider.
-       kmsProviders: {
+      // The key vault collection contains the data key that the client uses to encrypt and decrypt fields.
+      keyVaultNamespace: `${constants.VAULT_DB}.${constants.VAULT_COLL}`,
+      // The client expects a key management system to store and provide the application's master encryption key.
+      // For now, we will use a local master key, so they use the local KMS provider.
+      kmsProviders: {
         local: {
           key: localMasterKey
         }
       },
-       // The JSON Schema that we have defined doesn't explicitly specify the collection to which it applies.
-       // To assign the schema, they map it to the medicalRecords.patients collection namespace
-       schemaMap:sm
+      // The JSON Schema that we have defined doesn't explicitly specify the collection to which it applies.
+      // To assign the schema, they map it to the medicalRecords.patients collection namespace
+      schemaMap: sm
     }
   }
 

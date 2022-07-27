@@ -1,5 +1,5 @@
 // make-data-key.js
-const mongoclient = require ('./mongoclient')
+const mongoclient = require('./mongoclient')
 const fs = require("fs")
 const constants = require("./constants.js")
 const { ClientEncryption } = require("mongodb-client-encryption")
@@ -12,16 +12,16 @@ async function main() {
 
   const localMasterKey = fs.readFileSync("./master-key.txt")
   //console.log(localMasterKey.length)
- 
+
   const encryption = new ClientEncryption(client, {
     keyVaultNamespace: `${constants.VAULT_DB}.${constants.VAULT_COLL}`,
-    kmsProviders:  {
+    kmsProviders: {
       local: {
         key: localMasterKey
       }
     }
   })
-  
+
   //ensure unique index on Key vault
   try {
     await client
@@ -48,7 +48,7 @@ async function main() {
     .collection(constants.VAULT_COLL)
     .findOne({ keyAltNames: { $in: [constants.KEY_ALT_NAME] } })
 
-  let keyId=""
+  let keyId = ""
   if (dataKey === null) {
     dataKey = await encryption.createDataKey("local", {
       keyAltNames: [constants.KEY_ALT_NAME]
@@ -61,7 +61,7 @@ async function main() {
   }
   console.log("dataKey created! Writing it to a file..")
   client.close()
-  fs.writeFileSync("keyid.txt",keyId)
+  fs.writeFileSync("keyid.txt", keyId)
 
 
 
